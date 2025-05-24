@@ -125,11 +125,11 @@ RATE_PER_KM=1.2
 
 ## 👨‍💻 Author
 
-**Krrish Kumar**
+**Aman Arora**
 Backend Engineer | B.Tech CSE @ AKGEC
-[GitHub](https://github.com/KrrishKumar125)
-[LinkedIn](https://www.linkedin.com/in/krrishkumar125/)
-[mailto:krrishkumar2028@gmail.com](mailto:krrishkumar2028@gmail.com)
+[GitHub](https://github.com/phygma)
+[LinkedIn](https://www.linkedin.com/in/aman-arora-38b6a2245/)
+[mailto:aroraman203@gmail.com](mailto:aroraman203@gmail.com)
 
 ---
 
