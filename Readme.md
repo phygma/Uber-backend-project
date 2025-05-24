@@ -1,116 +1,155 @@
-# 🚕 Uber Backend Clone
+# 🚗 RideGate — A Real-Time Ride Matching Platform
 
-A full-featured backend system for an Uber-like ride-hailing service. This Node.js project uses **Express.js**, **MongoDB**, **Redis**, and **Socket.IO**, and supports authentication, real-time driver location updates, ride booking, and fare estimation.
+**RideWave** is a monolithic backend system that simulates a real-time ride-hailing platform, enabling fast and efficient driver-passenger matching using geospatial data and live socket communication.
 
-## 🚀 Features
-
-- ✅ **Authentication & Authorization** for both Passengers and Drivers (JWT-based)
-- 📍 **Real-time Location Tracking** using Socket.IO
-- 📦 **Booking System** with driver-passenger matching
-- 🧠 **Fare and ETA Calculation** based on distance
-- ⚙️ **Modular Clean Architecture** with service, controller, and repository layers
-- 🧰 **Redis Caching** for performance and state tracking
+> Built with: **Node.js**, **Express**, **MongoDB**, **Redis**, **Socket.IO**
 
 ---
 
-## 🧱 Project Structure
-```none
-uber-backend/
-│
-├── controllers/
-│ ├── authController.js
-│ ├── bookingController.js
-│ ├── driverController.js
-│ └── passengerController.js
-│
-├── middleware/
-│ └── authMiddleware.js
-│
-├── models/
-│ ├── booking.js
-│ └── user.js
-│
-├── repository/
-│ ├── bookingRepo.js
-│ ├── driverRepo.js
-│ └── passengerRepo.js
-│
-├── routes/
-│ ├── authRoutes.js
-│ ├── bookingRoutes.js
-│ ├── driverRoutes.js
-│ └── passengerRoutes.js
-│
-├── services/
-│ ├── authService.js
-│ ├── bookingService.js
-│ ├── distance.js
-│ ├── driverService.js
-│ ├── locationService.js
-│ └── passengerService.js
-│
-├── utils/
-│ ├── db.js
-│ └── redisClient.js
-│
-├── .env
-├── index.js
-└── package.json
-```
+## 🌐 System Overview
 
+- Real-time socket connections between drivers and passengers
+- Location-aware matching via geospatial indexing
+- Redis-backed proximity search and event handling
 
 ---
 
 ## ⚙️ Tech Stack
 
-- **Node.js + Express.js** — Server framework
-- **MongoDB + Mongoose** — NoSQL database
-- **Redis** — For caching and live tracking
-- **Socket.IO** — Real-time driver location and booking status
-- **JWT** — Authentication for both passengers and drivers
-- **Geospatial Calculations** — Used for ETA and fare estimation
+| Purpose                   | Technology       |
+| ------------------------- | ---------------- |
+| Backend Framework         | Node.js, Express |
+| Database                  | MongoDB          |
+| Real-time Communication   | Socket.IO        |
+| Caching & Location Lookup | Redis (with GEO) |
 
 ---
 
-## 🧪 API Endpoints Overview
+## 🧠 Key Features
 
-### Auth
-- `POST /api/auth/register` – Register as driver/passenger
-- `POST /api/auth/login` – Login and receive JWT
+### 🧩 Redis for Performance Optimization
 
-### Passengers
-- `GET /api/passenger/profile`
-- `POST /api/passenger/book` – Request a ride
+- **Driver ↔ Socket ID Mapping:**  
+  Redis stores driver `socketId`s for instant ride dispatching.
+- **Redis GEO:**  
+  Enables fast proximity-based queries using `GEORADIUS`.
 
-### Drivers
-- `GET /api/driver/available` – Set availability
-- `PATCH /api/driver/location` – Update current location
+### 📍 Geohashing & Proximity Matching
 
-### Bookings
-- `GET /api/booking/:id` – Get booking status
-- `POST /api/booking/accept` – Driver accepts ride
+- Implements geospatial logic to find and match the nearest drivers to a given passenger location.
 
----
+### 🔌 Real-Time WebSocket Communication
 
-## 🧮 Fare & Distance
+- Uses **Socket.IO** to:
+  - Emit and receive ride lifecycle events
+  - Support live updates for booking, confirmation, and cancellation
 
-- **`services/distance.js`** uses Haversine formula or external APIs to compute distance.
-- Fare is dynamically calculated using:
+### 🗃️ MongoDB for Persistent Storage
 
----
-
-## 🛰️ Real-Time Functionality
-
-- **Driver location updates** are emitted via Socket.IO to passengers.
-- **Booking status** is pushed in real-time to both drivers and passengers.
+- Used to manage:
+  - User profiles
+  - Booking history
+  - Ride metadata
 
 ---
 
-## 🧑‍💻 Setup & Run Locally
-
-### 1. Clone the repo
+## 📁 Project Structure
 
 ```bash
-git clone https://github.com/phygma/uber-backend-project.git
-cd uber-backend-clone
+
+ridewave/
+├── src/
+│ ├── controllers/ # Booking and business logic controllers
+│ ├── middlewares/ # Middleware for validation or auth (future)
+│ ├── models/ # MongoDB schemas
+│ ├── public/ # Static files
+│ ├── repository/ # Data access layer (Mongo/Redis)
+│ ├── routes/ # All route definitions
+│ ├── services/ # Location and booking services
+│ ├── utils/ # Redis client, DB connectors, helpers
+│ └── index.js # App entry point, server + socket setup
+├── .env
+├── package.json
+└── README.md
+
 ```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js v16+
+- Redis installed and running
+- MongoDB running locally or via cloud (MongoDB Atlas)
+
+### Installation
+
+```bash
+git clone https://github.com/yourusername/ridewave.git
+cd ridewave
+npm install
+```
+
+### Start the App
+
+```bash
+npm start
+```
+
+---
+
+## 📡 WebSocket Events Overview
+
+| Event Name      | Description                                |
+| --------------- | ------------------------------------------ |
+| `newBooking`    | Triggered when a passenger requests a ride |
+| `rideConfirmed` | Sent when a driver confirms a ride         |
+| `removeBooking` | Triggered on timeout or cancellation       |
+
+---
+
+## 📝 Environment Variables (`.env`)
+
+```bash
+PORT=8000
+MONGO_URI=mongodb://localhost:27017/ridewave
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=your_jwt_secret
+BASIC_FARE=50
+RATE_PER_KM=1.2
+```
+
+---
+
+## 👨‍💻 Author
+
+**Krrish Kumar**
+Backend Engineer | B.Tech CSE @ AKGEC
+[GitHub](https://github.com/KrrishKumar125)
+[LinkedIn](https://www.linkedin.com/in/krrishkumar125/)
+[mailto:krrishkumar2028@gmail.com](mailto:krrishkumar2028@gmail.com)
+
+---
+
+## 📌 Future Improvements
+
+- Add driver/rider rating system
+- Deploy using Docker and container orchestration
+- Integrate a queue for fault-tolerant event handling
+- Switch to microservices architecture
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file.
+
+---
+
+## 📬 Contact
+
+For any queries or contributions, feel free to reach out via GitHub or email.
+
+---
